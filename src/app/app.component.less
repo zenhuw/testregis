@@ -1,0 +1,314 @@
+.register-container{
+  display: flex;
+  background: white !important; //change to white
+  padding: 5%;
+  width: 100vw;
+}
+
+.divider-bottom{
+  border-top: solid;
+  border-width: 1px;
+  margin-top: 3em;
+}
+
+.signature{
+  margin: 3em;
+  margin-bottom: 3em;
+  font-style: italic;
+}
+
+.submit{
+justify-content: space-between;
+flex-direction: column;
+height: 10em;
+display: flex;
+}
+
+.submit-btn{
+  justify-content: flex-end;
+  display: flex;
+
+  .btn{
+      width: 300px;
+  }
+}
+
+.left{
+  // width: 30%;
+  flex: 30%;
+  background: white !important; // change to white
+  padding: 5%;
+
+  .logo{
+      margin-top: 50px;
+      margin-bottom: 50px;
+
+      .img{
+          width: 100%;
+          object-fit: contain;
+      }
+  }
+
+  .content{
+      margin-right:50px;
+  }
+
+  .radio-cicilan{
+      margin-left: 2em;
+      font-size: 0.7em;
+  }
+
+  .cicilan-input{
+      margin-top: 1em;
+      margin-left: 1em;
+  }
+
+  .input-group{
+      margin-top: 3em;
+      width: 100%;
+  }
+
+  .input-label{
+      font-size: 1em;
+      color: black;
+      text-transform: uppercase;
+      font-weight: bold;
+      letter-spacing: 0.2em;
+      width: 100%;
+  }
+
+  .input-box-free{
+      width: 100%;
+      height: 2em;
+      border-style: none;
+      border-bottom: solid 2px black;
+      // background: dimgray;
+  }
+
+  .input-box-small{
+      max-width: 20%;
+      // min-width: 30%;
+      height: 1em;
+      border-style: none;
+      border-bottom: solid 1px black;
+      // background: dimgray;
+
+      text-align: center;
+
+      flex-shrink: 100px;
+  }
+
+  .input-radio{
+      .clr-form-control{
+          margin-top: 0.5em;
+      }
+
+      .clr-radio-wrapper{
+          margin-top: 0.5em;
+      }
+  }
+
+  .radio-label-big{
+      margin-top: 0.5em;
+      font-size: 1em;
+      font-style: italic;
+      color: black;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+  }
+
+  .radio-label{
+      margin-top: 0.5em;
+      font-size: 1em;
+      font-style: italic;
+      color: black;
+  }
+}
+
+.right{
+  // display: none;
+  // width: 70%;
+  flex: 70%;
+  background: white !important; // change to white
+  padding: 5%;
+  padding-left: 0px;
+
+  .info-top{
+      color: black;
+      font-style: italic;
+  }
+
+  .middle{
+      margin-top: 1em;
+  }
+
+  .checklist-reasons{
+      margin-left: 3em;
+      margin-right: 3em;
+      margin-bottom: 3em;
+  }
+
+  clr-date-container.clr-form-control{
+      width: 50px;
+      margin-top:0.5em;
+      margin-left: 1em;
+      border-width: 0px;
+
+      .clr-input-group{
+          border-bottom: 0px none !important;
+      }
+  }
+
+  .input-box-date{
+      display: none;
+      justify-content: center;
+  }
+
+  .input-box-large{
+      margin-top: 1em;
+      width: 100%;
+      height: 10em;
+      border-style: solid;
+      border-width: 2px;
+      border-color: black;
+
+      text-align: left;
+      vertical-align: top;
+  }
+
+  .input-box-free{
+      height: 1.5em;
+      border-style: none;
+      border-bottom: solid 2px black;
+      // background: dimgray;
+      flex-grow: 5;
+  }
+
+  .label-group-top{
+      display: flex;
+      margin-top: 50px;
+      // margin-bottom: 50px;
+      width: 100%;
+
+      .form-label{
+          display: inline-block;
+          width: 50%;
+          flex: 50%;
+          font-size: 6em;
+          line-height: 1em;
+          color: black;
+          text-transform: uppercase;
+          font-weight: bold;
+          letter-spacing: 0.1em;
+      }
+  }
+
+  .side{
+      // width: 50%;
+      // flex: 50%;
+      margin-bottom: 1em;
+      color: black;
+      font-size: 0.9em;
+      text-transform: uppercase;
+
+      .side1{
+          height: 50%;
+          font-weight: bold;
+      }
+
+      .side2{
+          height: 50%;
+      }
+  }
+
+  .input-container{
+      color: black;
+
+      .input-group{
+          margin-top: 1em;
+          width: 100%;
+      }
+
+      .input-label{
+          margin-bottom: 0.5em;
+          font-size: 1em;
+          color: black;
+          text-transform: uppercase;
+          font-weight: bold;
+          letter-spacing: 0.2em;
+          width: 100%;
+      }
+
+      .input-box{
+          width: 100%;
+          height: 3em;
+          border-style: solid;
+          border-width: 2px;
+          border-color: black;
+      }
+
+      .email:invalid{
+          width: 100%;
+          height: 3em;
+          border-style: solid;
+          border-width: 2px;
+          border-color: red;
+      }
+
+      .input-group2{
+          display: flex;
+
+          .input-left{
+              margin-top: 1em;
+              flex: 4;
+          }
+
+          .input-right{
+              margin-top: 1em;
+              flex: 6;
+              margin-left: 1em;
+          }
+
+          .input-right2{
+              margin-top: 1em;
+              flex: 6;
+              margin-left: 1em;
+              display: flex;
+
+              .dd{
+                  flex: 2;
+                  margin-right: 1em;
+              }
+
+              .mm{
+                  flex: 2;
+                  margin-right: 1em;
+              }
+
+              .yyyy{
+                  flex: 4;
+              }
+          }
+      }
+
+      .input-group3{
+          display: flex;
+
+          .input-corner{
+              margin-top: 1em;
+              flex: 3;
+          }
+
+          .input-middle{
+              margin-top: 1em;
+              flex: 4;
+          }
+
+          .input-corner-big{
+              display: flex;
+              margin-top: 1em;
+              flex: 7;
+          }
+      }
+  }
+}
