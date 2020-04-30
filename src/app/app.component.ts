@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -21,22 +21,32 @@ export class AppComponent {
     kerjaKontrak: new FormControl(''),
     kerjaLepas: new FormControl(''),
     partisipasi: new FormControl(''),
-    partisipasiLainnya: new FormControl(''),
+    partisipasiLainnya: new FormControl({value:'',disabled:true}),
     iuran: new FormControl(''),
-    cicilanMonths: new FormControl(''),
+    cicilanMonths: new FormControl({value:1,disabled:true}),
     cashOrTransfer: new FormControl(''),
     dd: new FormControl(''),
     mm: new FormControl(''),
     yyyy: new FormControl(''),
     date: new FormControl(''),
-    masalah: new FormControl(''),
+    // masalah: new FormGroup({
+      jamKerja: new FormControl(''),
+      perlindunganHukum: new FormControl(''),
+      jaminanSosial: new FormControl(''),
+      kontrakKerja: new FormControl(''),
+      jaminanKesehatan: new FormControl(''),
+      bebanKerja: new FormControl(''),
+      upahLayak: new FormControl(''),
+      hasMasalahLainnya: new FormControl(''),
+    // }),
+    masalahLainnya: new FormControl({value:'',disabled:true}),
 
     nama: new FormControl(''),
     tempat: new FormControl(''),
     subsektor: new FormControl(''),
     tempatKerja: new FormControl(''),
     nomerPonsel: new FormControl(''),
-    email: new FormControl(''),
+    email: new FormControl('',Validators.email),
     bpjs_ks: new FormControl(''),
     bpjs_tk: new FormControl(''),
     alasan: new FormControl(''),
@@ -82,10 +92,10 @@ export class AppComponent {
     lainnyaText: '',
   };
 
-  // dd;
-  // mm;
-  // yyyy;
-  // date = '00/00/0000';
+  dd;
+  mm;
+  yyyy;
+  date = '00/00/0000';
 
   partisipasiLainnyaDisabled = true;
 
@@ -111,14 +121,25 @@ export class AppComponent {
 
   onDateInput() {
     // console.log(this.date);
-    // this.mm = this.date.substr(0, 2);
-    // this.dd = this.date.substr(3, 2);
-    // this.yyyy = this.date.substr(6, 4);
+    this.date = this.form.controls["date"].value;
+
+    this.mm = this.date.substr(0, 2);
+    this.dd = this.date.substr(3, 2);
+    this.yyyy = this.date.substr(6, 4);
+
+    this.form.controls["mm"].setValue(this.mm);
+    this.form.controls["dd"].setValue(this.dd);
+    this.form.controls["yyyy"].setValue(this.yyyy);
   }
 
   togglePartisipasiLainnya() {
     // if (this.partisipasi != 'lainnya') this.partisipasiLainnya = '';
     // this.partisipasiLainnyaDisabled = (this.partisipasi === 'lainnya') ? false : true;
+
+    if (this.form.controls["partisipasi"].value != 'lainnya') this.form.controls["partisipasiLainnya"].setValue("");
+    // this.partisipasiLainnyaDisabled = (this.form.controls["partisipasi"].value === 'lainnya') ? false : true;
+    if (this.form.controls["partisipasi"].value === 'lainnya') this.form.controls["partisipasiLainnya"].enable();
+    else this.form.controls["partisipasiLainnya"].disable();
   }
 
   toggleCicilan() {
@@ -128,18 +149,36 @@ export class AppComponent {
     //   this.cicilanMonths = 12;
     // }
     // this.cicilanDisabled = (this.iuran === 'cicilan') ? false : true;
+
+    if (this.form.controls["iuran"].value == 'satuTahun') {
+      this.form.controls["cicilanMonths"].setValue("12");
+    }
+    // this.cicilanDisabled = (this.form.controls["iuran"].value === 'cicilan') ? false : true;
+
+    if (this.form.controls["iuran"].value === 'cicilan') this.form.controls["cicilanMonths"].enable()
+    else this.form.controls["cicilanMonths"].disable();
   }
 
   toggleMasalahLainnya() {
-    if (!this.masalah.lainnya) this.masalah.lainnyaText = '';
+    // if (!this.masalah.lainnya) this.masalah.lainnyaText = '';
 
-    this.masalahLainnyaDisabled = !this.masalah.lainnya;
+    // this.masalahLainnyaDisabled = !this.masalah.lainnya;
+
+    if (this.form.controls["hasMasalahLainnya"].value == false) this.form.controls["masalahLainnya"].setValue("");
+
+    if (this.form.controls["hasMasalahLainnya"].value == true) this.form.controls["masalahLainnya"].enable();
+    else this.form.controls["masalahLainnya"].disable();
+    console.log(this.masalahLainnyaDisabled);
   }
 
   cicilan() {
-    // const total = this.cicilanMonths * 25;
-    // const str = total.toString() + '.000';
-    // return str;
+    const months = this.form.controls["cicilanMonths"].value;
+    if (months <= 1) this.form.controls["cicilanMonths"].setValue(1);
+
+    const total = this.form.controls["cicilanMonths"].value * 25;
+    const str = total.toString() + '.000';
+    console.log(this.form.controls["cicilanMonths"].value);
+    return str;
   }
 
   populateDropdownProvinsi() {

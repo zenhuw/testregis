@@ -3,7 +3,7 @@
   <div id="canvas" class="register-container">
     <div class="left">
       <div class="logo">
-        <img src="../../../assets/logo/sindikasi-logo-black.png" />
+        <img src="../assets/logo/sindikasi-logo-black.png" />
       </div>
 
       <div class="content">
@@ -11,7 +11,7 @@
         <div class="input-group">
           <div class="input-label"><label>Gender</label></div>
           <!-- <input class="input-box-free" placeholder="(KOTA/KABUPATEN)" [(ngModel)]="domisili" required /> -->
-          <div>
+          <div id="gender">
             <select name="gender" formControlName="gender">
               <option *ngFor="let option of genderOptions" [value]="option">{{
                 option
@@ -222,6 +222,7 @@
             class="input-box-free"
             formControlName="partisipasiLainnya"
             required
+            [disabled]="partisipasiLainnyaDisabled"
           />
         </div>
 
@@ -273,6 +274,7 @@
                 class="input-box-small"
                 formControlName="cicilanMonths"
                 required
+                [disabled]="cicilanDisabled"
               />
               <label class="radio-label">BULAN</label>
             </div>
@@ -411,7 +413,7 @@
           <div class="input-right">
             <div class="input-label"><label>Email</label></div>
             <input
-              class="input-box email"
+              class="input-box email_OLD"
               type="email"
               formControlName="email"
               required
@@ -442,19 +444,19 @@
           <div class="input-group3">
             <div class="input-corner">
               <clr-checkbox-wrapper>
-                <input type="checkbox" clrCheckbox formControlName="masalah" />
+                <input type="checkbox" clrCheckbox formControlName="jamKerja" />
                 <label>Jam Kerja</label>
               </clr-checkbox-wrapper>
             </div>
             <div class="input-middle">
               <clr-checkbox-wrapper>
-                <input type="checkbox" clrCheckbox formControlName="masalah" />
+                <input type="checkbox" clrCheckbox formControlName="perlindunganHukum"/>
                 <label>Perlindungan Hukum</label>
               </clr-checkbox-wrapper>
             </div>
             <div class="input-corner">
               <clr-checkbox-wrapper>
-                <input type="checkbox" clrCheckbox formControlName="masalah" />
+                <input type="checkbox" clrCheckbox formControlName="jaminanSosial"/>
                 <label>Jaminan Sosial</label>
               </clr-checkbox-wrapper>
             </div>
@@ -464,19 +466,19 @@
           <div class="input-group3">
             <div class="input-corner">
               <clr-checkbox-wrapper>
-                <input type="checkbox" clrCheckbox formControlName="masalah" />
+                <input type="checkbox" clrCheckbox formControlName="kontrakKerja"/>
                 <label>Kontrak Kerja</label>
               </clr-checkbox-wrapper>
             </div>
             <div class="input-middle">
               <clr-checkbox-wrapper>
-                <input type="checkbox" clrCheckbox formControlName="masalah" />
+                <input type="checkbox" clrCheckbox formControlName="jaminanKesehatan"/>
                 <label>Jaminan Kesehatan</label>
               </clr-checkbox-wrapper>
             </div>
             <div class="input-corner">
               <clr-checkbox-wrapper>
-                <input type="checkbox" clrCheckbox formControlName="masalah" />
+                <input type="checkbox" clrCheckbox formControlName="bebanKerja"/>
                 <label>Beban Kerja</label>
               </clr-checkbox-wrapper>
             </div>
@@ -486,7 +488,7 @@
           <div class="input-group3">
             <div class="input-corner">
               <clr-checkbox-wrapper>
-                <input type="checkbox" clrCheckbox formControlName="masalah" />
+                <input type="checkbox" clrCheckbox formControlName="upahLayak"/>
                 <label>Upah Layak</label>
               </clr-checkbox-wrapper>
             </div>
@@ -495,14 +497,14 @@
                 <input
                   type="checkbox"
                   clrCheckbox
-                  formControlName="masalah"
-                  (ngModelChange)="toggleMasalahLainnya()"
+                  formControlName="hasMasalahLainnya"
+                  (change)="toggleMasalahLainnya()"
                 />
                 <label>Lainnya, yaitu: </label>
               </clr-checkbox-wrapper>
               <input
                 class="input-box-free"
-                formControlName="masalah"
+                formControlName="masalahLainnya"
                 required
               />
             </div>
