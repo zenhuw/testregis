@@ -63,7 +63,7 @@
           <!-- <input class="input-box-free" placeholder="(KOTA/KABUPATEN)" [(ngModel)]="domisili" required /> -->
           <div>
             <select name="propinsi" formControlName="propinsi">
-              <option [value]="'Propinsi'" selected hidden>
+              <option [value]="'Propinsi'" selected hidden (change)="checkIsProvinsiSelected()">
                 Provinsi
               </option>
               <option *ngFor="let option of provinsiOptions" [value]="option">{{

@@ -14,7 +14,7 @@ export class AppComponent {
     profesiMedia: new FormControl(''),
     profesiKreatif: new FormControl(''),
     domisili: new FormControl(''),
-    propinsi: new FormControl(''),
+    propinsi: new FormControl({value:'',disabled:true}),
     kabupaten: new FormControl(''),
     statusKerja: new FormControl(''),
     kerjaTetap: new FormControl(''),
@@ -187,6 +187,14 @@ export class AppComponent {
     this.provinsiOptions = [
       // add the data to the list
     ];
+  }
+
+  checkIsProvinsiSelected(){
+    if (this.form.controls["propinsi"].value != ""){
+      this.form.controls["kabupaten"].enable();
+      this.populateDropdownKabupaten();
+    }
+    else this.form.controls["kabupaten"].disable();
   }
 
   populateDropdownKabupaten() {
