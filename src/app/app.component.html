@@ -1,5 +1,5 @@
-<form [formGroup]="form">
-  <pre>{{ form.value | json }}</pre>
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <!-- <pre>{{ form.value | json }}</pre> -->
   <div id="canvas" class="register-container">
     <div class="left">
       <div class="logo">
@@ -63,12 +63,19 @@
           <!-- <input class="input-box-free" placeholder="(KOTA/KABUPATEN)" [(ngModel)]="domisili" required /> -->
           <div>
             <select name="propinsi" formControlName="propinsi">
-              <option [value]="'Propinsi'" selected hidden (change)="checkIsProvinsiSelected()">
+              <option
+                [value]="'Propinsi'"
+                selected
+                hidden
+                (change)="checkIsProvinsiSelected()"
+              >
                 Provinsi
               </option>
-              <option *ngFor="let option of provinsiOptions" [value]="option">{{
-                option
-              }}</option>
+              <option
+                *ngFor="let option of provinces | async"
+                [value]="option.id"
+                >{{ option.name }}</option
+              >
             </select>
           </div>
           <div>
@@ -77,9 +84,9 @@
                 Kabupaten/Kota
               </option>
               <option
-                *ngFor="let option of kabupatenOptions"
-                [value]="option"
-                >{{ option }}</option
+                *ngFor="let option of regencies | async"
+                [ngValue]="option.id"
+                >{{ option.name }}</option
               >
             </select>
           </div>
@@ -227,7 +234,7 @@
         </div>
 
         <!-- iuran -->
-        <div class="input-radio input-group">
+        <!-- <div class="input-radio input-group">
           <div class="input-label">
             <label>
               Kelengkapan iuran perdana
@@ -261,11 +268,11 @@
             </clr-radio-wrapper>
           </clr-radio-container>
 
-          <!-- cicilan perdana -->
+          cicilan perdana
           <div class="cicilan-input">
             <div class="input-label">
               <label class="radio-label-big">RP {{ cicilan() }}</label>
-              <!-- <input class="input-box-small" [(ngModel)]="cicilan()" required /> -->
+              <input class="input-box-small" [(ngModel)]="cicilan()" required />
             </div>
             <div>
               <label class="radio-label">untuk</label>
@@ -283,7 +290,7 @@
             </div>
           </div>
 
-          <!-- cash or transfer -->
+          cash or transfer
           <div class="radio-cicilan">
             <clr-radio-wrapper>
               <input
@@ -314,7 +321,7 @@
               >
             </clr-radio-wrapper>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <!-- right column -->
@@ -408,7 +415,16 @@
         <div class="input-group2">
           <div class="input-left">
             <div class="input-label"><label>No. ponsel</label></div>
-            <input class="input-box" formControlName="nomerPonsel" required />
+            <input
+              class="input-box"
+              type="text"
+              formControlName="nomerPonsel"
+              maxlength="15"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              digitOnly
+              required
+            />
           </div>
           <div class="input-right">
             <div class="input-label"><label>Email</label></div>
@@ -450,13 +466,21 @@
             </div>
             <div class="input-middle">
               <clr-checkbox-wrapper>
-                <input type="checkbox" clrCheckbox formControlName="perlindunganHukum"/>
+                <input
+                  type="checkbox"
+                  clrCheckbox
+                  formControlName="perlindunganHukum"
+                />
                 <label>Perlindungan Hukum</label>
               </clr-checkbox-wrapper>
             </div>
             <div class="input-corner">
               <clr-checkbox-wrapper>
-                <input type="checkbox" clrCheckbox formControlName="jaminanSosial"/>
+                <input
+                  type="checkbox"
+                  clrCheckbox
+                  formControlName="jaminanSosial"
+                />
                 <label>Jaminan Sosial</label>
               </clr-checkbox-wrapper>
             </div>
@@ -466,19 +490,31 @@
           <div class="input-group3">
             <div class="input-corner">
               <clr-checkbox-wrapper>
-                <input type="checkbox" clrCheckbox formControlName="kontrakKerja"/>
+                <input
+                  type="checkbox"
+                  clrCheckbox
+                  formControlName="kontrakKerja"
+                />
                 <label>Kontrak Kerja</label>
               </clr-checkbox-wrapper>
             </div>
             <div class="input-middle">
               <clr-checkbox-wrapper>
-                <input type="checkbox" clrCheckbox formControlName="jaminanKesehatan"/>
+                <input
+                  type="checkbox"
+                  clrCheckbox
+                  formControlName="jaminanKesehatan"
+                />
                 <label>Jaminan Kesehatan</label>
               </clr-checkbox-wrapper>
             </div>
             <div class="input-corner">
               <clr-checkbox-wrapper>
-                <input type="checkbox" clrCheckbox formControlName="bebanKerja"/>
+                <input
+                  type="checkbox"
+                  clrCheckbox
+                  formControlName="bebanKerja"
+                />
                 <label>Beban Kerja</label>
               </clr-checkbox-wrapper>
             </div>
@@ -488,7 +524,11 @@
           <div class="input-group3">
             <div class="input-corner">
               <clr-checkbox-wrapper>
-                <input type="checkbox" clrCheckbox formControlName="upahLayak"/>
+                <input
+                  type="checkbox"
+                  clrCheckbox
+                  formControlName="upahLayak"
+                />
                 <label>Upah Layak</label>
               </clr-checkbox-wrapper>
             </div>
@@ -571,7 +611,7 @@
 
         <div class="submit">
           <div class="submit-btn">
-            <button (click)="submit()" class="btn btn-outline">
+            <button type="submit" class="btn btn-outline">
               Kirim
             </button>
           </div>
