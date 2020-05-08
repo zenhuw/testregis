@@ -1,14 +1,13 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, ValidatorFn } from '@angular/forms';
-import { Service } from './register.service';
+import { Service } from '../register.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.less']
+  selector: 'register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.less']
 })
-
-export class AppComponent implements OnInit {
+export class RegisterComponent implements OnInit {
   title = 'sindikasiregis';
 
   form: FormGroup;
@@ -98,37 +97,37 @@ export class AppComponent implements OnInit {
 
   initForm() {
     this.form = this.formBuilder.group({
-      gender: ["Perempuan", [Validators.required]],
+      gender: [null, [Validators.required]],
       profesi: this.formBuilder.group
-      ({
-        profesiMedia: [false],
-        profesiKreatif: [false],
-      }, {validators: requireCheckboxesToBeCheckedValidator()}
-      ),
+        ({
+          profesiMedia: [false],
+          profesiKreatif: [false],
+        }, { validators: requireCheckboxesToBeCheckedValidator() }
+        ),
       domisili: this.formBuilder.group
         ({
-          propinsi: ['test', [Validators.required]],
-          kabupaten: ['test', [Validators.required]],
+          propinsi: [null, [Validators.required]],
+          kabupaten: [null, [Validators.required]],
         }),
       statusKerja: this.formBuilder.group
         ({
           kerjaTetap: [false],
           kerjaKontrak: [false],
           kerjaLepas: [false],
-        }, {validators: requireCheckboxesToBeCheckedValidator()}
+        }, { validators: requireCheckboxesToBeCheckedValidator() }
         ),
-      partisipasi: ['', [Validators.required]],
-      partisipasiLainnya: [{ value: '', disabled: true }],
-      iuran: ['', [Validators.required]],
-      cicilanMonths: this.formBuilder.group(
-        { inputValue: [{ value: 1, disabled: true }] },
-        [Validators.required, Validators.min(1)],
-      ),
-      cashOrTransfer: ['', [Validators.required]],
+      partisipasi: [null, [Validators.required]],
+      partisipasiLainnya: [{ value: null, disabled: true }],
+      // iuran: [null, [Validators.required]],
+      // cicilanMonths: this.formBuilder.group(
+      //   { inputValue: [{ value: 1, disabled: true }] },
+      //   [Validators.required, Validators.min(1)],
+      // ),
+      // cashOrTransfer: ['', [Validators.required]],
       dd: [{ value: 'DD', disabled: true }],
       mm: [{ value: 'MM', disabled: true }],
       yyyy: [{ value: 'YYYY', disabled: true }],
-      date: ['', [Validators.required]],
+      date: [null, [Validators.required]],
 
       masalah: this.formBuilder.group
         ({
@@ -142,14 +141,14 @@ export class AppComponent implements OnInit {
           lainnya: ['']
         }),
 
-      nama: ['', Validators.required],
-      tempat: ['', Validators.required],
-      subsektor: ['', Validators.required],
+      nama: [null, [Validators.required]],
+      tempat: [null, [Validators.required]],
+      subsektor: [null, [Validators.required]],
       tempatKerja: [''],
-      nomerPonsel: ['', Validators.required, Validators.maxLength(12)],
-      email: ['', Validators.required, Validators.email],
-      bpjs_ks: [null, Validators.required],
-      bpjs_tk: [null, Validators.required],
+      nomerPonsel: [null, [Validators.required, Validators.maxLength(12)]],
+      email: [null, [Validators.required, Validators.email]],
+      bpjs_ks: [null, [Validators.required]],
+      bpjs_tk: [null, [Validators.required]],
       alasan: [''],
     });
   }
@@ -166,7 +165,7 @@ export class AppComponent implements OnInit {
   // }
 
   formChanges(): void {
-    this.form.get('propinsi').valueChanges.subscribe(val => {
+    this.form.get('domisili.propinsi').valueChanges.subscribe(val => {
       this.getRegencies(val);
     });
   }
@@ -377,10 +376,20 @@ export class AppComponent implements OnInit {
   }
 
   submit() {
-    this.register.register(this.form.value).then(res => {
-      alert('Registrasi Berhasil');
-      this.form.reset();
-    }).catch(Err => { alert(Err); });
+    if (this.form.valid) {
+      this.register.register(this.form.value).then(res => {
+        alert('Registrasi Berhasil');
+        this.form.reset();
+      }).catch(Err => { alert(Err); });
+    }
+    else {
+      alert('Lengkapi semua data wajib!');
+      Object.keys(this.form.controls).forEach(field => { // {1}
+        const control = this.form.get(field);            // {2}
+        control.markAsTouched({ onlySelf: true });       // {3}
+      });
+      console.log(this.form);
+    }
   }
 
   initForm_OLD() {

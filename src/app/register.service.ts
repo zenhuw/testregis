@@ -7,10 +7,9 @@ import * as momentD from 'moment';
 })
 export class Service {
 
-  API_URL = 'http://localhost:1323/';
+  API_URL = 'http://157.230.245.31:1323/';
 
   constructor(private http: HttpClient) { }
-
 
   async register(req): Promise<any> {
     let body = new HttpParams()
@@ -26,60 +25,61 @@ export class Service {
       .set('ParticipatePart', req.partisipasi)
       .set('ParticipatePartOther', req.partisipasiLainnya ? req.partisipasiLainnya : "")
       .set('JoinReason', req.alasan)
-      .set('Province', req.propinsi)
-      .set('City', req.kabupaten)
+      .set('Province', req.domisili['propinsi'])
+      .set('City', req.domisili['kabupaten'])
       .set('WorkFieldSub', req.subsektor)
       .set('WorkProblemOther', req.masalahLainnya ? req.masalahLainnya : "")
       .set("Bpjsks", req.bpjs_ks)
       .set("Bpjstk", req.bpjs_tk)
 
-    if (req.profesiMedia !== null && req.profesiMedia !== false) {
+    if (req.profesi['profesiMedia'] !== null && req.profesi['profesiMedia'] !== false) {
+      console.log("adding workfield media");
       body = body.append('WorkField', 'Media');
     }
 
-    if (req.profesiKreatif !== null && req.profesiKreatif !== false) {
+    if (req.profesi['profesiKreatif'] !== null && req.profesi['profesiKreatif'] !== false) {
+      console.log("adding workfield creative");
       body = body.append('WorkField', 'Kreatif');
     }
 
-    if (req.jamKerja !== null && req.jamKerja !== false) {
+    if (req.masalah['jamKerja'] !== null && req.masalah['jamKerja'] !== false) {
       body = body.append('WorkProblem', 'Jam Kerja');
     }
 
-    if (req.kontrakKerja !== null && req.kontrakKerja !== false) {
+    if (req.masalah['kontrakKerja'] !== null && req.masalah['kontrakKerja'] !== false) {
       body = body.append('WorkProblem', 'Kontrak Kerja');
     }
 
-    if (req.upahLayak !== null && req.upahLayak !== false) {
+    if (req.masalah['upahLayak'] !== null && req.masalah['upahLayak'] !== false) {
       body = body.append('WorkProblem', 'Upah Layak');
     }
 
-    if (req.perlindunganHukum !== null && req.perlindunganHukum !== false) {
+    if (req.masalah['perlindunganHukum'] !== null && req.masalah['perlindunganHukum'] !== false) {
       body = body.append('WorkProblem', 'Perlindungan Hukum');
     }
 
-    if (req.jaminanKesehatan !== null && req.jaminanKesehatan !== false) {
+    if (req.masalah['jaminanKesehatan'] !== null && req.masalah['jaminanKesehatan'] !== false) {
       body = body.append('WorkProblem', 'Jaminan Kesehatan');
     }
-    if (req.jaminanSosial !== null && req.jaminanSosial !== false) {
+    if (req.masalah['jaminanSosial'] !== null && req.masalah['jaminanSosial'] !== false) {
       body = body.append('WorkProblem', 'Jaminan Sosial');
     }
 
-    if (req.bebanKerja !== null && req.bebanKerja !== false) {
+    if (req.masalah['bebanKerja'] !== null && req.masalah['bebanKerja'] !== false) {
       body = body.append('WorkProblem', 'Beban Kerja');
     }
 
-    if (req.kerjaTetap !== null && req.kerjaTetap !== false) {
+    if (req.statusKerja['kerjaTetap'] !== null && req.statusKerja['kerjaTetap'] !== false) {
       body = body.append('WorkStatus', 'Tetap');
     }
 
-    if (req.kerjaKontrak !== null && req.kerjaKontrak !== false) {
+    if (req.statusKerja['kerjaKontrak'] !== null && req.statusKerja['kerjaKontrak'] !== false) {
       body = body.append('WorkStatus', 'Kontrak');
     }
 
-    if (req.kerjaLepas !== null && req.kerjaLepas !== false) {
+    if (req.statusKerja['kerjaLepas'] !== null && req.statusKerja['kerjaLepas'] !== false) {
       body = body.append('WorkStatus', 'Freelance');
     }
-
 
     console.log(body);
     const httpOptions = {
@@ -95,10 +95,11 @@ export class Service {
 
       return res;
     } catch (error) {
+      console.log(error);
       throw new Error('Something Wrong With The Request');
     }
-
   }
+
   async provinces(): Promise<any[]> {
     let res;
     try {
@@ -125,7 +126,6 @@ export class Service {
     } else {
       throw new Error('Connection Error / Unauthorized');
     }
-
   }
 
   async regencies(id: number): Promise<any[]> {

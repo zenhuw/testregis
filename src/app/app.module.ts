@@ -8,10 +8,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { DigitOnlyModule } from '@uiowa/digit-only';
+import { EmailConfirmComponent } from './email-confirm/email-confirm.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    EmailConfirmComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

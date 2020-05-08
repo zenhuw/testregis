@@ -1,0 +1,596 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <pre>{{ form.value | json }}</pre>
+  <div id="canvas" class="register-container">
+    <div class="left">
+      <div class="logo">
+        <img src="../assets/logo/sindikasi-logo-black.png" />
+      </div>
+
+      <div class="content">
+        <!-- gender -->
+        <div id="gender" class="input-group">
+          <div class="input-label"><label>Gender</label></div>
+          <!-- <input class="input-box-free" placeholder="(KOTA/KABUPATEN)" [(ngModel)]="domisili" required /> -->
+          <div>
+            <select formControlName="gender">
+              <option *ngFor="let option of genderOptions" [value]="option">{{
+                option
+              }}</option>
+            </select>
+          </div>
+
+          <!-- invalid warning -->
+          <div
+            *ngIf="form.controls.gender.invalid && (form.controls.gender.dirty || form.controls.gender.touched)"
+            class="alert alert-danger">
+            <div *ngIf="form.controls.gender.errors.required">
+              Mohon isi gender
+            </div>
+          </div>
+        </div>
+
+        <!-- profesi -->
+        <div class="input-radio" formGroupName="profesi">
+          <div class="input-label"><label>Bidang profesi</label></div>
+          <div class="input-corner">
+            <clr-checkbox-wrapper>
+              <input type="checkbox" clrCheckbox formControlName="profesiMedia" value="true" />
+              <label>Media</label>
+            </clr-checkbox-wrapper>
+          </div>
+          <div class="input-corner">
+            <clr-checkbox-wrapper>
+              <input type="checkbox" clrCheckbox formControlName="profesiKreatif" value="true" />
+              <label>Kreatif</label>
+            </clr-checkbox-wrapper>
+          </div>
+
+          <!-- invalid warning -->
+          <div *ngIf="form.controls.profesi.invalid && (form.controls.profesi.dirty || form.controls.profesi.touched)"
+            class="alert alert-danger">
+            <div *ngIf="form.controls.profesi.errors && form.controls.profesi.errors.requireCheckboxesToBeChecked">
+              Mohon isi bidang profesi
+            </div>
+          </div>
+          <!-- <clr-radio-container>
+                    <clr-radio-wrapper>
+                        <input type="radio" clrRadio name="profesi" required value="media" [(ngModel)]="profesi" />
+                        <label class="radio-label-big">Media</label>
+                    </clr-radio-wrapper>
+                    <clr-radio-wrapper>
+                        <input type="radio" clrRadio name="profesi" required value="kreatif" [(ngModel)]="profesi" />
+                        <label class="radio-label-big">Kreatif</label>
+                    </clr-radio-wrapper>
+                </clr-radio-container> -->
+        </div>
+
+        <!-- domisili -->
+        <div class="input-group" formGroupName="domisili">
+          <div class="input-label"><label>Domisili</label></div>
+          <!-- <input class="input-box-free" placeholder="(KOTA/KABUPATEN)" [(ngModel)]="domisili" required /> -->
+          <div>
+            <select name="propinsi" formControlName="propinsi" (change)="checkIsProvinsiSelected()">
+              <option [value]="'Propinsi'" selected hidden>
+                Provinsi
+              </option>
+              <option *ngFor="let option of provinces | async" [value]="option.id">{{ option.name }}</option>
+            </select>
+          </div>
+          <div>
+            <select name="kabupaten" formControlName="kabupaten">
+              <option [value]="'Kabupaten'" selected hidden>
+                Kabupaten/Kota
+              </option>
+              <option *ngFor="let option of regencies | async" [ngValue]="option.id">{{ option.name }}</option>
+            </select>
+          </div>
+
+          <!-- invalid warning -->
+          <div
+            *ngIf="form.controls.domisili.invalid && (form.controls.domisili.dirty || form.controls.domisili.touched)"
+            class="alert alert-danger">
+            <div>
+              Mohon isi data domisili
+            </div>
+          </div>
+        </div>
+
+        <!-- select province -->
+        <!-- <div class="input-group">
+                <label class="input-label">Propinsi</label>
+                <select [(ngModel)]="memberToChange.role">
+                    <option *ngFor="let option of provinsiOptions">{{option}}</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label class="input-label">Kabupaten/Kota</label>
+                <select [disabled]="selectedProvinsi==''" [(ngModel)]="memberToChange.role">
+                    <option *ngFor="let option of kabupatenOptions">{{option}}</option>
+                </select>
+            </div> -->
+
+        <!-- status kerja -->
+        <div class="input-radio input-group" formGroupName="statusKerja">
+          <div class="input-label"><label>Status Kerja</label></div>
+          <div class="input-corner">
+            <clr-checkbox-wrapper>
+              <input type="checkbox" clrCheckbox formControlName="kerjaTetap" />
+              <label>Tetap</label>
+            </clr-checkbox-wrapper>
+          </div>
+          <div class="input-corner">
+            <clr-checkbox-wrapper>
+              <input type="checkbox" clrCheckbox formControlName="kerjaKontrak" />
+              <label>Kontrak</label>
+            </clr-checkbox-wrapper>
+          </div>
+          <div class="input-corner">
+            <clr-checkbox-wrapper>
+              <input type="checkbox" clrCheckbox formControlName="kerjaLepas" />
+              <label>Freelance</label>
+            </clr-checkbox-wrapper>
+          </div>
+
+          <!-- invalid warning -->
+          <div *ngIf="form.controls.statusKerja.invalid && (form.controls.statusKerja.dirty || form.controls.statusKerja.touched)"
+            class="alert alert-danger">
+            <div *ngIf="form.controls.statusKerja.errors && form.controls.statusKerja.errors.requireCheckboxesToBeChecked">
+              Mohon isi status kerja
+            </div>
+          </div>
+          <!-- <clr-radio-container>
+                    <clr-radio-wrapper>
+                        <input type="radio" clrRadio name="statusKerja" required value="tetap"
+                            [(ngModel)]="statusKerja" />
+                        <label class="radio-label">Tetap</label>
+                    </clr-radio-wrapper>
+                    <clr-radio-wrapper>
+                        <input type="radio" clrRadio name="statusKerja" required value="kontrak"
+                            [(ngModel)]="statusKerja" />
+                        <label class="radio-label">Kontrak</label>
+                    </clr-radio-wrapper>
+                    <clr-radio-wrapper>
+                        <input type="radio" clrRadio name="statusKerja" required value="freelance"
+                            [(ngModel)]="statusKerja" />
+                        <label class="radio-label">Lepas/Mandiri</label>
+                    </clr-radio-wrapper>
+                </clr-radio-container> -->
+        </div>
+
+        <!-- partisipasi -->
+        <div class="input-radio input-group">
+          <div class="input-label">
+            <label>
+              Kesediaan partisipasi aktif dalam sindikasi
+            </label>
+          </div>
+          <clr-radio-container>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio required value="administrasi" formControlName="partisipasi"
+                (ngModelChange)="togglePartisipasiLainnya()" />
+              <label class="radio-label">Administrasi</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio required value="advokasi" formControlName="partisipasi"
+                (ngModelChange)="togglePartisipasiLainnya()" />
+              <label class="radio-label">Advokasi</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio required value="edukasi" formControlName="partisipasi"
+                (ngModelChange)="togglePartisipasiLainnya()" />
+              <label class="radio-label">Edukasi</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio required value="komunikasi" formControlName="partisipasi"
+                (ngModelChange)="togglePartisipasiLainnya()" />
+              <label class="radio-label">Publikasi & Komunikasi</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio required value="organisasi" formControlName="partisipasi"
+                (ngModelChange)="togglePartisipasiLainnya()" />
+              <label class="radio-label">Pengembangan Organisasi</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio required value="lainnya" formControlName="partisipasi"
+                (ngModelChange)="togglePartisipasiLainnya()" />
+              <label class="radio-label">Lainnya:</label>
+            </clr-radio-wrapper>
+          </clr-radio-container>
+          <input class="input-box-free" formControlName="partisipasiLainnya" required
+            [disabled]="partisipasiLainnyaDisabled" />
+
+          <!-- invalid warning -->
+          <div *ngIf="form.controls.partisipasi.invalid && (form.controls.partisipasi.dirty || form.controls.partisipasi.touched)"
+            class="alert alert-danger">
+            <div *ngIf="form.controls.partisipasi.errors.required">
+              Isi partisipasi di dalam organisasi
+            </div>
+          </div>
+        </div>
+
+        <!-- iuran -->
+        <!-- <div class="input-radio input-group">
+          <div class="input-label">
+            <label>
+              Kelengkapan iuran perdana
+            </label>
+          </div>
+          <clr-radio-container>
+            <clr-radio-wrapper>
+              <input
+                type="radio"
+                clrRadio
+                required
+                value="satuTahun"
+                formControlName="iuran"
+                (ngModelChange)="toggleCicilan()"
+              />
+              <label class="radio-label-big"
+                >RP 300.000,00 SATU TAHUN PERTAMA</label
+              >
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input
+                type="radio"
+                clrRadio
+                name="iuran"
+                required
+                value="cicilan"
+                formControlName="iuran"
+                (ngModelChange)="toggleCicilan()"
+              />
+              <label class="radio-label-big">CICILAN SEBESAR</label>
+            </clr-radio-wrapper>
+          </clr-radio-container>
+
+          cicilan perdana
+          <div class="cicilan-input">
+            <div class="input-label">
+              <label class="radio-label-big">RP {{ cicilan() }}</label>
+              <input class="input-box-small" [(ngModel)]="cicilan()" required />
+            </div>
+            <div>
+              <label class="radio-label">untuk</label>
+              <input
+                type="number"
+                class="input-box-small"
+                formControlName="cicilanMonths"
+                required
+                [disabled]="cicilanDisabled"
+              />
+              <label class="radio-label">BULAN</label>
+            </div>
+            <div>
+              <label class="radio-label">(Rp25.000/bulan)</label>
+            </div>
+          </div>
+
+          cash or transfer
+          <div class="radio-cicilan">
+            <clr-radio-wrapper>
+              <input
+                type="radio"
+                clrRadio
+                name="cashOrTransfer"
+                required
+                value="cash"
+                formControlName="cashOrTransfer"
+              />
+              <label class="radio-label-big">Cash</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input
+                type="radio"
+                clrRadio
+                name="cashOrTransfer"
+                required
+                value="transfer"
+                formControlName="cashOrTransfer"
+              />
+              <label class="radio-label-big">Transfer</label>
+              <label class="radio-label"
+                >Rekening BRI<br />
+                2074-01-000-225-568 a/n <br />
+                Serikat Pekerja Media dan Industri Kreatif untuk
+                Demokrasi</label
+              >
+            </clr-radio-wrapper>
+          </div>
+        </div> -->
+      </div>
+    </div>
+    <!-- right column -->
+    <div class="right">
+      <!-- info top -->
+      <!-- <div class="info-top">
+            Isi lembar ini dengan huruf kapital. Lengkapi dengan tanda tangan di kolom tersedia
+            lalu kirim formulir ke serikat@sindikasi.org dengan menyertakan bukti transfer iuran
+            anggota untuk 1 (satu) tahun pertama sebesar total Rp300.000,00 (bisa dicicil per bulan).
+        </div> -->
+
+      <!-- form title -->
+      <div class="label-group-top">
+        <div class="form-label">Formulir Anggota</div>
+      </div>
+      <div class="side">
+        <div class="side1">
+          SERIKAT PEKERJA MEDIA DAN INDUSTRI KREATIF UNTUK DEMOKRASI
+        </div>
+        <div class="side2">
+          JALAN TRIDHARMA RAYA NO. 52B, PONDOK LABU JAKARTA SELATAN
+        </div>
+      </div>
+
+      <!-- inputs start here -->
+      <div class="input-container">
+        <!-- name -->
+        <div class="opening">Saya yang bertandatangan di bawah ini:</div>
+        <div class="input-group">
+          <div class="input-label"><label>Nama lengkap</label></div>
+          <input class="input-box" formControlName="nama" required />
+          <div *ngIf="form.controls.nama.invalid && (form.controls.nama.dirty || form.controls.nama.touched)"
+            class="alert alert-danger">
+            <div *ngIf="form.controls.nama.errors.required">
+              Nama tidak boleh kosong
+            </div>
+          </div>
+        </div>
+
+        <!-- birth -->
+        <div class="input-group">
+
+          <!-- <div class="form-group input-group" [ngClass]="displayFieldCss('email')">
+            <div class="col-sm-12">
+              <label for="email" class="control-label required input-label">Email</label>
+              <input type="text" id="email" class="form-control input-box" formControlName="email">
+              <app-field-error-display
+                [displayError]="isFieldValid('email')"
+                errorMsg="Please inform your email">
+              </app-field-error-display>
+            </div>
+          </div> -->
+
+          <div class="input-label">
+            <label required>Tempat, tanggal lahir (dd/mm/yyyy)</label>
+          </div>
+
+          <div class="input-group2">
+            <div class="input-left">
+              <input class="input-box" formControlName="tempat" required />
+              <div *ngIf="form.controls.tempat.invalid && (form.controls.tempat.dirty || form.controls.tempat.touched)"
+                class="alert alert-danger">
+                <div *ngIf="form.controls.tempat.errors.required">
+                  Mohon isi tempat lahir
+                </div>
+              </div>
+            </div>
+            <div class="input-right2">
+              <div class="date-input-container">
+                <input class="input-box dd" placeholder="DD" formControlName="dd" required />
+                <input class="input-box mm" placeholder="MM" formControlName="mm" required />
+                <input class="input-box yyyy" placeholder="YYYY" formControlName="yyyy" required />
+
+                <!-- date picker -->
+                <clr-date-container>
+                  <input class="input-box-date" type="date" clrDate name="date" formControlName="date"
+                    (ngModelChange)="onDateInput()" />
+                </clr-date-container>
+              </div>
+
+              <!-- invalid warning -->
+              <div *ngIf="form.controls.date.invalid && (form.controls.date.dirty || form.controls.date.touched)"
+                class="alert alert-danger">
+                <div *ngIf="form.controls.date.errors.required">
+                  Mohon isi tanggal lahir
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- professional info -->
+        <div class="input-group2">
+          <div class="input-left">
+            <div class="input-label"><label>Subsektor profesi</label></div>
+            <input class="input-box" formControlName="subsektor" required />
+
+            <!-- invalid warning -->
+            <div
+              *ngIf="form.controls.subsektor.invalid && (form.controls.subsektor.dirty || form.controls.subsektor.touched)"
+              class="alert alert-danger">
+              <div *ngIf="form.controls.subsektor.errors.required">
+                Mohon isi subsektor industri
+              </div>
+            </div>
+          </div>
+          <div class="input-right">
+            <div class="input-label">
+              <label>Tempat kerja (jika ada)</label>
+            </div>
+            <input class="input-box" formControlName="tempatKerja" />
+          </div>
+        </div>
+        <div class="input-group2">
+          <div class="input-left">
+            <div class="input-label"><label>No. ponsel</label></div>
+            <input class="input-box" type="text" formControlName="nomerPonsel" maxlength="12" inputmode="numeric"
+              pattern="[0-9]*" digitOnly required />
+
+            <!-- invalid warning -->
+            <div
+              *ngIf="form.controls.nomerPonsel.invalid && (form.controls.nomerPonsel.dirty || form.controls.nomerPonsel.touched)"
+              class="alert alert-danger">
+              <div *ngIf="form.controls.nomerPonsel.errors.required">
+                Mohon isi nomer telpon
+              </div>
+            </div>
+          </div>
+          <div class="input-right">
+            <div class="input-label"><label>Email</label></div>
+            <input class="input-box email_OLD" type="email" formControlName="email" required />
+
+            <!-- invalid warning -->
+            <div *ngIf="form.controls.email.invalid && (form.controls.email.dirty || form.controls.email.touched)"
+              class="alert alert-danger">
+              <div *ngIf="form.controls.email.errors.required">
+                Mohon isi alamat email
+              </div>
+              <div *ngIf="form.controls.email.errors.email">
+                Email harus benar
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- alasan bergabung -->
+        <div class="middle">
+          dengan ini menyatakan kesediaan bergabung dengan Serikat Pekerja Media
+          dan Industri Kreatif untuk Demokrasi <b>(SINDIKASI)</b> dan mematuhi
+          segala peraturan keanggotaan yang berlaku. Adapun alasan saya
+          bergabung ialah:
+        </div>
+        <textarea class="input-box-large" formControlName="alasan"></textarea>
+
+        <!-- problems faced (checklist) -->
+        <div class="middle">
+          Dengan permasalahan ketenagakerjaan yang saya sedang hadapi atau
+          menjadi fokus saya saat ini, antara lain:
+        </div>
+        <div class="checklist-reasons" formGroupName="masalah">
+          <!-- first row -->
+          <div class="input-group3">
+            <div class="input-corner">
+              <clr-checkbox-wrapper>
+                <input type="checkbox" clrCheckbox formControlName="jamKerja" />
+                <label>Jam Kerja</label>
+              </clr-checkbox-wrapper>
+            </div>
+            <div class="input-middle">
+              <clr-checkbox-wrapper>
+                <input type="checkbox" clrCheckbox formControlName="perlindunganHukum" />
+                <label>Perlindungan Hukum</label>
+              </clr-checkbox-wrapper>
+            </div>
+            <div class="input-corner">
+              <clr-checkbox-wrapper>
+                <input type="checkbox" clrCheckbox formControlName="jaminanSosial" />
+                <label>Jaminan Sosial</label>
+              </clr-checkbox-wrapper>
+            </div>
+          </div>
+
+          <!-- second row -->
+          <div class="input-group3">
+            <div class="input-corner">
+              <clr-checkbox-wrapper>
+                <input type="checkbox" clrCheckbox formControlName="kontrakKerja" />
+                <label>Kontrak Kerja</label>
+              </clr-checkbox-wrapper>
+            </div>
+            <div class="input-middle">
+              <clr-checkbox-wrapper>
+                <input type="checkbox" clrCheckbox formControlName="jaminanKesehatan" />
+                <label>Jaminan Kesehatan</label>
+              </clr-checkbox-wrapper>
+            </div>
+            <div class="input-corner">
+              <clr-checkbox-wrapper>
+                <input type="checkbox" clrCheckbox formControlName="bebanKerja" />
+                <label>Beban Kerja</label>
+              </clr-checkbox-wrapper>
+            </div>
+          </div>
+
+          <!-- third row -->
+          <div class="input-group3">
+            <div class="input-corner">
+              <clr-checkbox-wrapper>
+                <input type="checkbox" clrCheckbox formControlName="upahLayak" />
+                <label>Upah Layak</label>
+              </clr-checkbox-wrapper>
+            </div>
+            <div class="input-corner-big">
+              <!-- <clr-checkbox-wrapper>
+                <input type="checkbox" clrCheckbox formControlName="lainnya"
+                  (change)="toggleMasalahLainnya()" />
+              </clr-checkbox-wrapper> -->
+              <label>Lainnya, yaitu: </label>
+              <input class="input-box-free" formControlName="lainnya" />
+            </div>
+          </div>
+        </div>
+
+        <!-- bottom -->
+        <div class="divider-bottom"></div>
+
+        <div class="date-time"></div>
+
+        <!-- <div class="signature">Setelah mengirim data ini, mohon kirim Tanda Tangan Digital berupa file
+                gambar (ukuran maksimal 2MB) ke alamat email <b>serikat@sindikasi.org</b> dengan format judul:
+                <br>"Pendaftaran Anggota [Nama Lengkap]"
+            </div> -->
+
+        <div class="middle">Apakah kamu peserta BPJS Kesehatan?</div>
+        <clr-radio-container>
+          <clr-radio-wrapper>
+            <input type="radio" clrRadio required value="true" formControlName="bpjs_ks" />
+            <label class="radio-label">Ya</label>
+          </clr-radio-wrapper>
+          <clr-radio-wrapper>
+            <input type="radio" clrRadio required value="false" formControlName="bpjs_ks" />
+            <label class="radio-label">Tidak</label>
+          </clr-radio-wrapper>
+        </clr-radio-container>
+
+        <!-- invalid warning -->
+        <div *ngIf="form.controls.bpjs_ks.invalid && (form.controls.bpjs_ks.dirty || form.controls.bpjs_ks.touched)"
+          class="alert alert-danger">
+          <div *ngIf="form.controls.bpjs_ks.errors.required">
+            Mohon jawab pertanyaan ini
+          </div>
+        </div>
+
+        <div class="middle">Apakah kamu peserta BPJS Ketenagakerjaan?</div>
+        <clr-radio-container>
+          <clr-radio-wrapper>
+            <input type="radio" clrRadio required value="true" formControlName="bpjs_tk" />
+            <label class="radio-label">Ya</label>
+          </clr-radio-wrapper>
+          <clr-radio-wrapper>
+            <input type="radio" clrRadio required value="false" formControlName="bpjs_tk" />
+            <label class="radio-label">Tidak</label>
+          </clr-radio-wrapper>
+        </clr-radio-container>
+
+        <!-- invalid warning -->
+        <div *ngIf="form.controls.bpjs_tk.invalid && (form.controls.bpjs_tk.dirty || form.controls.bpjs_tk.touched)"
+          class="alert alert-danger">
+          <div *ngIf="form.controls.bpjs_tk.errors.required">
+            Mohon jawab pertanyaan ini
+          </div>
+        </div>
+
+        <div class="submit">
+          <div class="submit-btn">
+            <button type="submit" class="btn btn-outline">
+              Kirim
+            </button>
+          </div>
+        </div>
+
+        <!-- end -->
+      </div>
+    </div>
+  </div>
+</form>
+
+<ng-template #incompleteWarning>
+  <p class="p1" style="padding-top: 0px; margin-top: 0px;">
+    Isi semua data wajib!
+  </p>
+</ng-template>
+
+<ng-template #submitLoading>
+  <p class="p1" style="padding-top: 0px; margin-top: 0px;">Mengirim Data</p>
+  <div class="progress loop"><progress></progress></div>
+</ng-template>
